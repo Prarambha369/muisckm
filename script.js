@@ -129,6 +129,77 @@ const lowDownSeq = new Tone.Sequence((time, note) => {
 lowDownSeq.loop = true;
 lowDownSeq.loopEnd = "2m";
 
+// --- Download WAV functionality ---
+async function loadWaveFile() {
+  if (!window.wavefile) {
+    await new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'wavefile.min.js';
+      script.onload = resolve;
+      script.onerror = reject;
+      document.body.appendChild(script);
+    });
+  }
+}
+
+async function encodeAndDownloadWav(buffer) {
+  await loadWaveFile();
+  // Convert Tone.js AudioBuffer to 16-bit PCM WAV using wavefile
+  const channelData = [];
+  for (let i = 0; i < buffer.numberOfChannels; i++) {
+    channelData.push(buffer.getChannelData(i));
+  }
+  // Interleave channels if stereo, else just use mono
+  let interleaved;
+  if (channelData.length === 2) {
+    interleaved = new Float32Array(channelData[0].length * 2);
+    for (let i = 0, j = 0; i < channelData[0].length; i++, j += 2) {
+      interleaved[j] = channelData[0][i];
+      interleaved[j + 1] = channelData[1][i];
+    }
+  } else {
+    interleaved = channelData[0];
+  }
+  // Convert Float32 to 16-bit PCM
+  function floatTo16BitPCM(input) {
+    const output = new Int16Array(input.length);
+    for (let i = 0; i < input.length; i++) {
+      let s = Math.max(-1, Math.min(1, input[i]));
+      output[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+    }
+    return output;
+  }
+  const wav = new window.wavefile.WaveFile();
+  wav.fromScratch(
+    channelData.length, // number of channels
+    buffer.sampleRate,
+    '16',
+    channelData.map(floatTo16BitPCM)
+  );
+  const wavBuffer = wav.toBuffer();
+  const blob = new Blob([wavBuffer], { type: 'audio/wav' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'Muisckm.wav';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => {
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, 100);
+}
+
+document.getElementById('downloadBtn').addEventListener('click', async () => {
+  const duration = 30; // seconds
+  const sampleRate = 44100;
+  const buffer = await Tone.Offline(async ({ transport, destination }) => {
+    createOfflineSong(destination, transport);
+  }, duration, { sampleRate });
+  await encodeAndDownloadWav(buffer);
+});
+// --- End Download WAV functionality ---
+
 document.getElementById('playBtn').addEventListener('click', async () => {
   await Tone.start();
   Tone.Transport.stop();
@@ -147,8 +218,16 @@ document.getElementById('playBtn').addEventListener('click', async () => {
   }, 30000);
 });
 
+// Add a check to stop all sequences on stop
+
 document.getElementById('stopBtn').addEventListener('click', () => {
   Tone.Transport.stop();
   Tone.Transport.cancel();
+  drums.stop();
+  bassLine.stop();
+  guitarArp.stop();
+  stringPart.stop();
+  pianoPart.stop();
+  harpArp.stop();
   lowDownSeq.stop();
 });
