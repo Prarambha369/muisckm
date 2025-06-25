@@ -1,25 +1,65 @@
-# Muisckm Music Project
+# Muisckm: Music Project <img src="favicon_io/favicon.ico" align="right" width="32" height="32">
 
-## Description
-This is a web-based music application built with Tone.js, allowing for interactive playback of a custom music composition in the browser. It includes synths, sequences, and parts for a full musical experience.
+## How It Works
 
-## Installation
-1. Clone the repository or ensure you have the project files in your local directory.
-2. Run `npm install` to install dependencies, including Tone.js and any other required packages.
+- The UI is defined in `index.html`.
+- All music logic is in `script.js` (using Tone.js for synthesis and sequencing).
+- The **Download WAV** button uses the [wavefile](https://github.com/rochars/wavefile) library to export the audio.
 
-## Usage
-1. Open `index.html` in a web browser.
-2. Use the play, stop, and download buttons to control the music playback.
-3. Note: Audio playback may require user interaction (e.g., clicking a button) due to browser autoplay policies.
+## Project Structure
+
+```
+├── index.html         # Main web page
+├── script.js          # Music logic (Tone.js)
+├── muisckm.wav        # Example exported WAV (optional)
+├── favicon_io/        # Favicon and web manifest
+├── LICENSE            # Apache 2.0 License
+├── README.md          # This file
+└── package.json       # For Node.js (optional, not required for browser use)
+```
 
 ## Dependencies
-- Tone.js for audio synthesis and sequencing.
-- Ensure you have a modern web browser that supports the Web Audio API.
 
-## Troubleshooting
-- If music doesn't play, check the browser console for errors (e.g., CORS issues with sample URLs).
-- Make sure all scripts are loaded correctly in `index.html`.
+- [Tone.js](https://tonejs.github.io/) (loaded via CDN)
+- [wavefile](https://github.com/rochars/wavefile) (for WAV export, loaded dynamically)
 
-## Credits
-- Built using Tone.js library.
-- Project maintained by mrbashyal.
+## Usage as a Template
+
+You can use this project as a starting point for your own browser-based music tools or generative music projects. Just edit `script.js` to change the music logic.
+
+
+## License
+
+This project is licensed under the [Apache 2.0 License](LICENSE).
+
+---
+
+### Minimal Example: Run Your Own Tone.js Music Script
+
+If you want to run your own music code, use the following template:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tone.js Music Demo</title>
+    <script src="https://unpkg.com/tone"></script>
+</head>
+<body>
+    <h1>My Tone.js Composition</h1>
+    <button id="playButton">Play Music</button>
+    <button id="stopButton">Stop Music</button>
+    <script>
+        // ...your Tone.js music code here (see script.js for a full example)...
+    </script>
+</body>
+</html>
+```
+
+See `script.js` for a complete, production-ready Tone.js music script.
+
+---
+
+**Muisckm** is maintained by [mrbashyal](https://github.com/Prarambha369).
