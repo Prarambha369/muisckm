@@ -1,6 +1,6 @@
 const BPM = 144;
-Tone.Transport.bpm.value = BPM;// --- Global sequences and parts for playback ---
-let drums, bassLine, guitarArp, stringPart, pianoPart, harpArp, lowDownSeq;// --- Setup global synths for playback ---
+Tone.Transport.bpm.value = BPM;
+let drums, bassLine, guitarArp, stringPart, pianoPart, harpArp, lowDownSeq;
 const kick = new Tone.MembraneSynth({
   pitchDecay: 0.05,
   octaves: 10,
@@ -44,7 +44,7 @@ const lowDownSynth = new Tone.Synth({
   oscillator: { type: "sine" },
   envelope: { attack: 0.01, decay: 0.2, sustain: 0.2, release: 0.5 }
 }).toDestination();
-lowDownSynth.volume.value = -2;// --- Setup global sequences and parts for playback ---
+lowDownSynth.volume.value = -2;
 drums = new Tone.Sequence((time, step) => {
   if (typeof step !== 'number') return;
   if (step % 4 === 0) kick.triggerAttackRelease("C1", "4n", time);
@@ -176,7 +176,7 @@ async function createOfflineSong(destination, transport) {
   harpArp.start(0);
   lowDownSeq.start(0);
   transport.start(0);
-}// --- Download WAV functionality ---
+}
 async function loadWaveFile() {
   if (!window.wavefile) {
     await new Promise((resolve, reject) => {
@@ -187,14 +187,13 @@ async function loadWaveFile() {
       document.body.appendChild(script);
     });
   }
-}async function encodeAndDownloadWav(buffer, filename) {
+}
+async function encodeAndDownloadWav(buffer, filename) {
   await loadWaveFile();
-  // Convert Tone.js AudioBuffer to 16-bit PCM WAV using wavefile
   const channelData = [];
   for (let i = 0; i < buffer.numberOfChannels; i++) {
     channelData.push(buffer.getChannelData(i));
   }
-  // Interleave channels if stereo, else just use mono
   let interleaved;
   if (channelData.length === 2) {
     interleaved = new Float32Array(channelData[0].length * 2);
@@ -205,7 +204,6 @@ async function loadWaveFile() {
   } else {
     interleaved = channelData[0];
   }
-  // Convert Float32 to 16-bit PCM
   function floatTo16BitPCM(input) {
     const output = new Int16Array(input.length);
     for (let i = 0; i < input.length; i++) {
@@ -216,7 +214,7 @@ async function loadWaveFile() {
   }
   const wav = new window.wavefile.WaveFile();
   wav.fromScratch(
-      channelData.length, // number of channels
+      channelData.length,
       buffer.sampleRate,
       '16',
       channelData.map(floatTo16BitPCM)
@@ -251,14 +249,16 @@ document.getElementById('playBtn').addEventListener('click', async () => {
   setTimeout(() => {
     Tone.Transport.stop();
   }, 30000);
-});document.getElementById('downloadBtn').addEventListener('click', () => {
+});
+document.getElementById('downloadBtn').addEventListener('click', () => {
   const a = document.createElement('a');
-  a.href = 'muisckm.wav'; // relative path to the file in your project root
+  a.href = 'muisckm.wav';
   a.download = 'muisckm.wav';
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-});document.getElementById('stopBtn').addEventListener('click', () => {
+});
+document.getElementById('stopBtn').addEventListener('click', () => {
   Tone.Transport.stop();
   Tone.Transport.cancel();
   drums.stop();
