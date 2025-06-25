@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Muisckm</title>
+  <script src="https://cdn.jsdelivr.net/npm/tone@14.7.77/build/Tone.min.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: #e0f2f7;
+      color: #333;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .container {
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 600px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    h1 {
+      color: #007bff;
+      margin-bottom: 10px;
+      font-size: 1.8em;
+    }
+    h2 {
+      color: #0056b3;
+      margin-top: 20px;
+      font-size: 1.4em;
+    }
+    p {
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+    .buttons-container {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    button {
+      padding: 15px 30px;
+      font-size: 1.1em;
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      font-weight: bold;
+      flex: 1 1 auto;
+      max-width: 200px;
+    }
+    button#playBtn {
+      background-color: #28a745;
+      color: white;
+    }
+    button#playBtn:hover {
+      background-color: #218838;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+    }
+    button#stopBtn {
+      background-color: #dc3545;
+      color: white;
+    }
+    button#stopBtn:hover {
+      background-color: #c82333;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+      h1 {
+        font-size: 1.5em;
+      }
+      h2 {
+        font-size: 1.2em;
+      }
+      button {
+        width: 100%;
+        max-width: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Muisckm</h1>
+    <p>Music Made for YSWS `HashCore`.</p>
+    <div class="buttons-container">
+      <button id="playBtn">Play Beat (30 sec)</button>
+      <button id="stopBtn">Stop Beat</button>
+      <button id="downloadBtn">Download WAV</button>
+    </div>
+  </div>
+  <script src="script.js"></script>
+
+</body>
+</html>

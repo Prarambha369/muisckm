@@ -1,3 +1,12 @@
-!/package-lock.json
-!/node_modules/
-!/.idea/
+# Node dependencies
+node_modules/
+package-lock.json
+
+# macOS
+.DS_Store
+
+# IDEs
+.idea/
+
+# Misc
+*.log
